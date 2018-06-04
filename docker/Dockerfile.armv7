@@ -3,12 +3,16 @@ FROM resin/rpi-raspbian
 RUN apt-get update \
  && apt-get install -y bind9 dnsutils gettext-base \
  && apt-get clean \
+ && chown -R bind:bind /etc/bind \
  && mkdir /var/bind \
  && chown bind:bind /var/bind \
  && mkdir -p /var/run/named \
- && chown bind:bind /var/run/named
+ && chown bind:bind /var/run/named \
+ && echo 'bind	ALL=(root) NOPASSWD: /usr/sbin/named -g -u bind ' > /etc/sudoers.d/bind
 
 ADD bind /opt/bind
+
+USER bind
 
 ENTRYPOINT ["/opt/bind/bin/bind.sh"]
 
