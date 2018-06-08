@@ -10,6 +10,7 @@ for SOURCE in `find $ETC_DIR -type f`; do
 	[[ ! -e `dirname $TARGET` ]] && mkdir -p `dirname $TARGET`
 	envsubst < $SOURCE > $TARGET
 done
- 
+
+echo "[`hostname -s`] Started" 
 sudo named -g -u bind
 exit $?
